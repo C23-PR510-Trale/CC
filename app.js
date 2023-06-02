@@ -3,8 +3,9 @@ const express = require("express");
 const app = express();
 const userRouter = require("./api/users/user.router");
 
+const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use("/api/users", userRouter);
-app.listen(process.env.APP_PORT,()=>{
-    console.log("Server up and running on PORT :", process.env.APP_PORT);
+app.listen(PORT,()=>{
+    console.log("Server up and running on PORT :", process.env.PORT);
 });
