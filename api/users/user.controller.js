@@ -33,7 +33,7 @@ module.exports={
         }
 
         // Tambahkan validasi email yang tidak sama
-         pool.query(`SELECT * FROM users WHERE LOWER(email) = LOWER(${pool.escape(req.body.email)});`, (err, result) => {
+         pool.query(`SELECT * FROM user WHERE LOWER(email) = LOWER(${pool.escape(req.body.email)});`, (err, result) => {
             // email sudah terdaftar
             if (result.length) {
                 return res.status(409).send({
