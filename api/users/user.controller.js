@@ -8,7 +8,7 @@ const {
     getData,
     getDataByTripId,
     getVolunByTripId,
-    getVolun,
+    getVolun
 } = require("./user.service");
 const pool = require("../../config/database");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
