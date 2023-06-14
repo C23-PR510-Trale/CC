@@ -4,7 +4,11 @@ const {
     getUserByUserId, 
     updateUser, 
     deleteUser,
-    getUserByUserEmail
+    getUserByUserEmail,
+    getData,
+    getDataByTripId,
+    getVolunByTripId,
+    getVolun
 } = require("./user.service");
 const pool = require("../../config/database");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
@@ -29,7 +33,7 @@ module.exports={
         }
 
         // Tambahkan validasi email yang tidak sama
-         pool.query(`SELECT * FROM user WHERE LOWER(email) = LOWER(${pool.escape(req.body.email)});`, (err, result) => {
+         pool.query(`SELECT * FROM users WHERE LOWER(email) = LOWER(${pool.escape(req.body.email)});`, (err, result) => {
             // email sudah terdaftar
             if (result.length) {
                 return res.status(409).send({
@@ -53,7 +57,6 @@ module.exports={
             });
         });
     },
-
     getUserByUserId: (req, res)=>{
         const id = req.params.id;
         getUserByUserId(id, (err,results)=>{
@@ -156,5 +159,69 @@ module.exports={
             }
         });
 
+    },
+    getDataByTripId: (req, res)=>{
+        const id = req.params.id;
+        getDataByTripId(id, (err,results)=>{
+
+            if (err){
+                console.log(err);
+                return;
+            }
+            if(!results){
+                return res.json({
+                    success: 0,
+                    message: "Record not found"
+                });
+            }
+            return res.json({
+                success: 1,
+                data: results
+            });
+        });
+    },
+    getData: (req, res)=>{
+        getData((err,results)=>{
+            if (err){
+                console.log(err);
+                return;
+            }
+            return res.json({
+                success: 1,
+                data: results
+            });
+        });
+    },
+    getVolunByTripId: (req, res)=>{
+        const id = req.params.id;
+        getVolunByTripId(id, (err,results)=>{
+
+            if (err){
+                console.log(err);
+                return;
+            }
+            if(!results){
+                return res.json({
+                    success: 0,
+                    message: "Record not found"
+                });
+            }
+            return res.json({
+                success: 1,
+                data: results
+            });
+        });
+    },
+    getVolun: (req, res)=>{
+        getVolun((err,results)=>{
+            if (err){
+                console.log(err);
+                return;
+            }
+            return res.json({
+                success: 1,
+                data: results
+            });
+        });
     },
 };
