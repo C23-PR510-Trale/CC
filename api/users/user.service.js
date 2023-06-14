@@ -3,7 +3,7 @@ const pool = require("../../config/database");
 module.exports = {
     create: (data, callBack) => {
         pool.query(
-            `insert into user(nama,address,telp,email,password,bio)
+            `insert into users(nama,address,telp,email,password,bio)
             values(?,?,?,?,?,?)`,
             [
                 data.nama,
@@ -23,7 +23,7 @@ module.exports = {
     },
     getUsers: callBack => {
         pool.query(
-            `select id,nama,address,telp,email,bio from user`,
+            `select id,nama,address,telp,email,bio from users`,
             [],
             (error, result, fields) =>{
                 if(error){
@@ -35,7 +35,7 @@ module.exports = {
     },
     getUserByUserId: (id,callBack) => {
         pool.query(
-            `select id,nama,address,telp,email,bio from user where id = ?`,
+            `select id,nama,address,telp,email,bio from users where id = ?`,
             [id],
             (error, result, fields) =>{
                 if(error){
@@ -47,7 +47,7 @@ module.exports = {
     },
     updateUser: (data, callBack) => {
         pool.query(
-            `UPDATE user SET nama=?, address=?, telp=?, email=?, password=?, bio=? WHERE id=?`,
+            `UPDATE users SET nama=?, address=?, telp=?, email=?, password=?, bio=? WHERE id=?`,
             [
                 data.nama,
                 data.address,
@@ -68,7 +68,7 @@ module.exports = {
     },
     deleteUser: (data,callBack)=>{
         pool.query(
-            `delete from user where id = ?`,
+            `delete from users where id = ?`,
             [data.id],
             (error, result, fields) => {
                 if(error){
@@ -80,13 +80,61 @@ module.exports = {
     },
     getUserByUserEmail: (email,callBack) => {
         pool.query(
-            `select * from user where email = ?`,
+            `select * from users where email = ?`,
             [email],
             (error, results, fields) =>{
                 if(error){
                     callBack(error);
                 }
                 return callBack(null, results[0]);
+            }
+        );
+    },
+    getData: callBack => {
+        pool.query(
+            `select id,trip_name,category,budget,rating,location from trip`,
+            [],
+            (error, result, fields) =>{
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result);
+            }
+        );
+    },
+    getDataByTripId: (id,callBack) => {
+        pool.query(
+            `select id,trip_name,category,budget,rating,location from trip where id = ?`,
+            [id],
+            (error, result, fields) =>{
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result[0]);
+            }
+        );
+    },
+    getVolun: callBack => {
+        pool.query(
+            `select id,event_name,description,category,city,price,rating,pelaksanaan,regis from volun`,
+            [],
+            (error, result, fields) =>{
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result);
+            }
+        );
+    },
+    getVolunByTripId: (id,callBack) => {
+        pool.query(
+            `select id,event_name,description,category,city,price,rating,pelaksanaan,regis from volun where id = ?`,
+            [id],
+            (error, result, fields) =>{
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result[0]);
             }
         );
     },
